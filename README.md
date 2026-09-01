@@ -1,2 +1,2 @@
-# Codigo-da-Transformacao-Python-EAD
-Este repositório é dedicado as atividades respondidas na plataforma EAD do Código da Transformação.
+# codigo-da-transformacao-python-EAD
+este repositorio e dedicado as atividades respondidas na plataforma ead do codigo da transformacao
