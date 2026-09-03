@@ -4,43 +4,36 @@ Use um loop while para que o usuário possa escolher entre
 Soma, Subtração e Sair, repetindo a operação até que ele decida parar.
 """
 
-def mostrar_menu():
-    """Exibe as opções do menu para o usuário."""
-    print("\n--- Menu de Operações ---")
-    print("1. Adição (+)")
-    print("2. Subtração (-)")
-    print("3. Sair")
-    print("------------------------")
+import time
 
-def obter_numeros():
-    """Solicita e retorna dois números válidos do usuário."""
-    while True:
+while True:
+    print("\n" + "✨" * 15)
+    print(" 🤖 CALCULADORA CABULOSA 🤖 ")
+    print("✨" * 15)
+    print("1️⃣ - Somar (Juntar as forças)")
+    print("2️⃣ - Subtrair (Sumir com a diferença)")
+    print("3️⃣ - Sair (Fugir dos números)")
+    
+    opcao = input("\nQual é a boa de hoje? (1-3): ")
+    
+    if opcao == "3":
+        print("\nDesligando os circuitos... Até a próxima! 👋🤖")
+        break
+        
+    if opcao in ("1", "2"):
         try:
-            num1 = float(input("Digite o primeiro número: "))
-            num2 = float(input("Digite o segundo número: "))
-            return num1, num2
+            num1 = float(input("👉 Digite o 1º número: "))
+            num2 = float(input("👉 Digite o 2º número: "))
         except ValueError:
-            print("Entrada inválida. Por favor, digite números válidos.")
-
-def main():
-    """Função principal que executa o menu interativo."""
-    while True:
-        mostrar_menu()
-        escolha = input("Escolha uma opção (1, 2 ou 3): ")
-
-        if escolha == '1':
-            num1, num2 = obter_numeros()
-            resultado = num1 + num2
-            print(f"Resultado da adição: {num1} + {num2} = {resultado}")
-        elif escolha == '2':
-            num1, num2 = obter_numeros()
-            resultado = num1 - num2
-            print(f"Resultado da subtração: {num1} - {num2} = {resultado}")
-        elif escolha == '3':
-            print("Saindo do programa. Até mais!")
-            break  # Sai do loop while
-        else:
-            print("Opção inválida. Por favor, escolha 1, 2 ou 3.")
-
-if __name__ == "__main__":
-    main()
+            print("\n🚨 Ops! Isso não é um número válido. Tente de novo!")
+            continue
+            
+        print("\nProcessando com inteligência artificial suprema...", end="")
+        time.sleep(0.8) # Faz uma pausa dramática para o resultado
+        
+        if opcao == "1":
+            print(f"\n🎉 BOOM! Resultado: {num1} + {num2} = {num1 + num2}")
+        elif opcao == "2":
+            print(f"\n🎉 BOOM! Resultado: {num1} - {num2} = {num1 - num2}")
+    else:
+        print("\n🤔 Ih, digitou errado! Escolha apenas 1, 2 ou 3.")

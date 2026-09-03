@@ -9,7 +9,7 @@ from datetime import datetime
 def mostrar_menu():
     """Exibe as opções do menu para o usuário."""
     print("\n--- Menu de Verificação de Idade ---")
-    print("1. Informar Idade e Descobrir Ano de Nascimento")
+    print("1. Informar Idade, Ano de Nascimento e Classificação")
     print("2. Sair")
     print("------------------------------------")
 
@@ -20,12 +20,23 @@ def obter_idade_atual():
             idade_str = input("Digite sua idade atual: ")
             idade = int(idade_str)
             
-            if 0 <= idade <= 120: # Idade razoável para validação
+            if 0 <= idade <= 120:  # Idade razoável para validação
                 return idade
             else:
                 print("Idade inválida. Por favor, digite uma idade entre 0 e 120 anos.")
         except ValueError:
             print("Entrada inválida. Por favor, digite um número inteiro para a idade.")
+
+def classificar_idade(idade):
+    """Retorna a classificação da faixa etária com base na idade."""
+    if idade <= 12:
+        return "Criança 🎈"
+    elif idade <= 17:
+        return "Adolescente 🎧"
+    elif idade <= 59:
+        return "Adulto 💼"
+    else:
+        return "Idoso 👑"
 
 def main():
     """Função principal que executa o menu interativo."""
@@ -38,17 +49,19 @@ def main():
             
             ano_atual = datetime.now().year
             ano_nascimento = ano_atual - idade_atual
+            categoria = classificar_idade(idade_atual)
 
             print(f"\nConsiderando o ano atual ({ano_atual}) e sua idade de {idade_atual} anos:")
-            print(f"Seu ano de nascimento é aproximadamente: {ano_nascimento}")
+            print(f"👉 Ano de nascimento aproximado: {ano_nascimento}")
+            print(f"👉 Faixa etária: {categoria}")
 
             if idade_atual >= 18:
-                print("Você é **MAIOR** de idade!")
+                print("👉 Status: MAIOR de idade")
             else:
-                print("Você é **MENOR** de idade.")
+                print("👉 Status: MENOR de idade")
 
         elif escolha == '2':
-            print("Saindo do programa. Até mais!")
+            print("\nSaindo do programa. Até mais!")
             break  # Sai do loop while
         else:
             print("Opção inválida. Por favor, escolha 1 ou 2.")
