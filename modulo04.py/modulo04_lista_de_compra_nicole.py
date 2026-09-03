@@ -1,57 +1,61 @@
-# 🚀 Projeto: Lista de Compras
-# Este programa permite que você gerencie uma lista de compras.
 
-# Começamos com uma lista vazia, onde os itens serão guardados.
+
+
 lista_de_compras = []
 
-# O programa vai rodar em um ciclo (loop) até você decidir sair.
+
 while True:
-    # Mostramos as opções disponíveis.
-    print("\n--- Menu ---")
+
+
+    print("\n--- LISTA DE COMPRAS ---")
     print("1. Adicionar item")
     print("2. Remover item")
-    print("3. Ver a lista")
+
+
+    print("3. Ver lista")
     print("4. Sair")
     
-    # Pedimos ao usuário para escolher uma opção.
-    escolha = input("Escolha uma opção (1-4): ")
+    opcao = input("Escolha uma opção (1-4): ").strip()
 
-    # Se a escolha for '1', vamos adicionar um item.
-    if escolha == '1':
-        item = input("Digite o nome do item: ")
-        # Adicionamos o item no final da lista.
-        lista_de_compras.append(item)
-        print(f"✅ '{item}' adicionado!")
-        
-    # Se a escolha for '2', vamos remover um item.
-    elif escolha == '2':
-        item_a_remover = input("Digite o nome do item para remover: ")
-        # Verificamos se o item existe na lista.
-        if item_a_remover in lista_de_compras:
-            # Se existir, removemos o item.
-            lista_de_compras.remove(item_a_remover)
-            print(f"🗑️ '{item_a_remover}' removido da lista.")
+    if opcao == '1':
+        item = input("Digite o nome do item: ").strip().capitalize()
+        if item:
+            lista_de_compras.append(item)
+            print(f"✅ '{item}' adicionado com sucesso!")
         else:
-            # Se não existir, avisamos o usuário.
-            print(f"❌ Erro: '{item_a_remover}' não está na lista.")
-            
-    # Se a escolha for '3', vamos ver a lista.
-    elif escolha == '3':
-        # Verificamos se a lista não está vazia.
+            print("⚠️ O nome do item não pode ser vazio.")
+
+    elif opcao == '2':
+        item = input("Digite o nome do item para remover: ").strip().capitalize()
+        if item in lista_de_compras:
+            lista_de_compras.remove(item)
+
+
+
+            print(f"🗑️ '{item}' removido da lista.")
+        else:
+            print(f"❌ '{item}' não foi encontrado na lista.")
+
+
+
+    elif opcao == '3':
         if lista_de_compras:
-            print("\n🛒 Sua lista de compras:")
-            # Percorremos a lista e mostramos cada item.
-            for i, item in enumerate(lista_de_compras, start=1):
-                print(f"{i}. {item}")
+            print("\n🛒 Sua Lista Atual:")
+            for indice, item in enumerate(lista_de_compras, start=1):
+
+
+
+
+                print(f"{indice}. {item}")
         else:
-            # Se a lista estiver vazia, avisamos.
-            print("📝 Sua lista está vazia.")
-            
-    # Se a escolha for '4', saímos do programa.
-    elif escolha == '4':
-        print("👋 Até mais!")
-        break # Este comando encerra o ciclo (loop).
-        
-    # Se a opção for inválida, pedimos para tentar de novo.
+            print("📝 A lista está vazia.")
+
+    elif opcao == '4':
+        print("👋 Programa encerrado!")
+        break
+
+
+
     else:
-        print("🚫 Opção inválida. Tente novamente.")
+
+        print("🚫 Opção inválida. Digite um número de 1 a 4.")
