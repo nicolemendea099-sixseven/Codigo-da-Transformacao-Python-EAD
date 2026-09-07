@@ -2,10 +2,7 @@
 # 1. Definição da Exceção Personalizada
 # ==========================================
 class SaldoInsuficienteError(Exception):
-    """
-    Exceção personalizada lançada quando o valor do saque 
-    é maior do que o saldo disponível na conta bancária.
-    """
+    """Exceção personalizada lançada quando o saque excede o saldo disponível."""
     pass
 
 
@@ -13,30 +10,28 @@ class SaldoInsuficienteError(Exception):
 # 2. Definição da Classe da Conta Bancária
 # ==========================================
 class ContaBancaria:
-    def __init__(self, saldo_inicial):
-        """
-        Inicializa a conta bancária com um saldo inicial.
-        
-        Parâmetro:
-        - saldo_inicial (float/int): O valor inicial disponível na conta.
-        """
-        self.saldo = saldo_inicial
+    def __init__(self, saldo_inicial=0.0):
+        if saldo_inicial < 0:
+            raise ValueError("O saldo inicial não pode ser negativo.")
+        self.saldo = float(saldo_inicial)
+
+    def depositar(self, valor):
+        """Adiciona saldo à conta após validar se o valor é positivo."""
+        if valor <= 0:
+            raise ValueError("O valor do depósito deve ser maior que zero.")
+        self.saldo += valor
+        return f"Depósito de R$ {valor:.2f} realizado com sucesso! Saldo atual: R$ {self.saldo:.2f}"
 
     def sacar(self, valor):
-        """
-        Realiza um saque na conta se houver saldo suficiente.
+        """Realiza um saque validando valor positivo e saldo suficiente."""
+        if valor <= 0:
+            raise ValueError("O valor do saque deve ser maior que zero.")
         
-        Parâmetro:
-        - valor (float/int): O valor a ser retirado.
-        """
-        # Verifica se o valor solicitado é maior que o saldo atual
         if valor > self.saldo:
-            # Lança (raise) a exceção personalizada se o saldo for insuficiente
             raise SaldoInsuficienteError(
                 f"Saque negado! Valor solicitado: R$ {valor:.2f} | Saldo disponível: R$ {self.saldo:.2f}"
             )
         
-        # Caso haja saldo, realiza a subtração e atualiza a conta
         self.saldo -= valor
         return f"Saque de R$ {valor:.2f} realizado com sucesso! Saldo restante: R$ {self.saldo:.2f}"
 
@@ -45,22 +40,25 @@ class ContaBancaria:
 # 3. Testes e Execução do Código
 # ==========================================
 if __name__ == "__main__":
-    # Criamos uma conta com R$ 100,00 de saldo inicial
     minha_conta = ContaBancaria(saldo_inicial=100.0)
 
-    # Teste 1: Saque permitido (dentro do saldo)
+    # Teste 1: Saque permitido
     print("--- Teste 1: Saque Permitido ---")
     try:
-        mensagem_sucesso = minha_conta.sacar(40.0)
-        print(mensagem_sucesso)
-    except SaldoInsuficienteError as erro:
+        print(minha_conta.sacar(40.0))
+    except (SaldoInsuficienteError, ValueError) as erro:
         print(f"Erro: {erro}")
 
-    # Teste 2: Saque negado (maior do que o saldo restante de R$ 60,00)
+    # Teste 2: Saque negado por saldo insuficiente
     print("\n--- Teste 2: Saque Sem Saldo ---")
     try:
-        mensagem_sucesso = minha_conta.sacar(100.0)
-        print(mensagem_sucesso)
-    except SaldoInsuficienteError as erro:
-        # Captura especificamente a exceção que nós criamos
+        print(minha_conta.sacar(100.0))
+    except (SaldoInsuficienteError, ValueError) as erro:
+        print(f"Erro capturado: {erro}")
+
+    # Teste 3: Tentativa de sacar valor negativo ou zero
+    print("\n--- Teste 3: Valor Inválido ---")
+    try:
+        print(minha_conta.sacar(-15.0))
+    except (SaldoInsuficienteError, ValueError) as erro:
         print(f"Erro capturado: {erro}")

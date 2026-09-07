@@ -1,30 +1,22 @@
-from abc import ABC, abstractmethod
-
-
-class Carro(ABC):
-    def __init__(self,marca, modelo):
+class Carro:
+    def __init__(self, marca, modelo):
         self.marca = marca
         self.modelo = modelo
 
-    @abstractmethod
-    def exibir_info(self):
-        """Retorna as informações do carro em formato legível."""
-        return f"Marca: {self.marca}, Modelo: {self.modelo}"
+    def __str__(self):
+        return f"{self.marca} {self.modelo}"
 
 class CarroEletrico(Carro):
     def __init__(self, marca, modelo, autonomia_bateria):
         super().__init__(marca, modelo)
-        self.autonomia = autonomia_bateria
+        self.autonomia_bateria = autonomia_bateria
 
+    def __str__(self):
+        return f"{super().__str__()} (Elétrico - {self.autonomia_bateria} km)"
 
+# Teste com print chamando o __str__ automaticamente
+c1 = Carro("Ford", "Mustang")
+c2 = CarroEletrico("BYD", "Seal", 520)
 
-
-
-
-
-    def exibir_info(self):
-        info_base = super().exibir_info()
-        return f"{info_base} | Autonomia da Bateria: {self.autonomia} km"
-
-meu_carro = CarroEletrico("BYD", "Dolphin", 600)
-print(meu_carro.exibir_info())
+print(c1)
+print(c2)

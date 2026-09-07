@@ -2,31 +2,33 @@
 # ATIVIDADE 03: Validação de Entrada de Usuário
 # ==========================================
 
-def solicitar_idade_valida():
+def solicitar_idade_valida(idade_minima=1, idade_maxima=120):
     """
-    Solicita a idade do usuário e valida se a entrada é um número inteiro positivo.
+    Solicita a idade do usuário e valida se a entrada é um número inteiro válido
+    dentro do intervalo especificado.
+    
+    Parâmetros:
+    - idade_minima (int): Idade mínima aceita (padrão: 1).
+    - idade_maxima (int): Idade máxima aceita (padrão: 120).
     
     Retorna:
     - int: A idade validada do usuário.
     """
     while True:
-        # Recebe a entrada do usuário como texto
-        entrada = input("Por favor, digite a sua idade: ")
+        # .strip() remove espaços vazios no início e final da digitação
+        entrada = input("Por favor, digite a sua idade: ").strip()
         
         try:
-            # Tenta converter o texto digitado para um número inteiro
             idade = int(entrada)
             
-            # Validação da regra de negócio: idade deve ser maior que zero
-            if idade <= 0:
-                print("Erro: A idade deve ser um número inteiro positivo (maior que zero).\n")
-                continue # Volta para o início do loop para pedir a entrada novamente
+            # Validação do intervalo esperado
+            if idade < idade_minima or idade > idade_maxima:
+                print(f"Erro: A idade deve estar entre {idade_minima} e {idade_maxima} anos.\n")
+                continue 
             
-            # Se passou pelas validações, retorna a idade e encerra a função
             return idade
 
         except ValueError:
-            # Captura o erro caso a conversão int(entrada) falhe (ex: se o usuário digitar letras)
             print("Erro: Entrada inválida! Por favor, digite apenas números inteiros.\n")
 
 
@@ -36,8 +38,5 @@ def solicitar_idade_valida():
 if __name__ == "__main__":
     print("--- Teste da Atividade 3: Validação de Idade ---\n")
     
-    # Chama a função e armazena o resultado validado
     idade_confirmada = solicitar_idade_valida()
-    
     print(f"\nSucesso! Idade de {idade_confirmada} anos registrada no sistema.")
-    

@@ -1,36 +1,44 @@
-'''
-instalando o requests, comando: pip install requests;
-
-Divisão dos Papéis & Regras (5 min)
-
-🧑‍💻 Driver (Piloto): Fica no teclado. Escreve a sintaxe Python, cria as variáveis e executa o código no terminal.
-
-🧭 Navigator (Navegador): Não toca no teclado. Analisa a documentação da API, orienta a lógica das requisições e verifica se as variáveis estão em snake_case.  
-
-⏱️ Timer: Troca de papéis a cada 15 minutos.
-
-
-'''
-
 import requests
 
-# 1. Definir URL da API (Exemplo: Cotações Financeiras)
-url_api = "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL"
-
-# 2. Fazer a requisição GET
-resposta = requests.get(url_api)
-
-# 3. Verificar status do retorno
-if resposta.status_code == 200:
-    dados = resposta.json()
-    print("Conexão estabelecida com sucesso!")
-else:
-    print(f"Erro na requisição: {resposta.status_code}")
+def obter_cotacoes():
+    """
+    Busca as cotações do Dólar e Euro em relação ao Real
+    utilizando a AwesomeAPI com tratamento de exceções.
+    """
+    url_api = "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL"
     
-# Continuando o tratamento dos dados JSON retornados
-cotacao_dolar = dados["USDBRL"]["bid"]
-nome_moeda = dados["USDBRL"]["name"]
+    try:
+        # Requisição GET com limite de tempo de 5 segundos
+        resposta = requests.get(url_api, timeout=5)
+        
+        # Lança uma exceção se a resposta HTTP retornar código de erro (4xx ou 5xx)
+        resposta.raise_for_status()
+        
+        # Converte a resposta recebida para dicionário Python
+        dados = resposta.json()
+        
+        # Exibição dos dados obtidos
+        print("========================================")
+        print("       COTAÇÕES ATUAIS DAS MOEDAS       ")
+        print("========================================")
+        
+        # Iteração pelas moedas retornadas na URL (USD-BRL e EUR-BRL)
+        for chave, info in dados.items():
+            nome = info["name"]
+            cotacao = float(info["bid"])
+            print(f"Moeda: {nome}")
+            print(f"Valor de Compra: R$ {cotacao:.2f}")
+            print("----------------------------------------")
 
-# Exibição amigável dos dados
-print(f"Moeda: {nome_moeda}")
-print(f"Valor atual de compra: R$ {float(cotacao_dolar):.2f}")
+    except requests.exceptions.Timeout:
+        print("Erro: A requisição demorou muito para responder (Timeout).")
+    except requests.exceptions.HTTPError as erro_http:
+        print(f"Erro HTTP ocorrido: {erro_http}")
+    except requests.exceptions.RequestException as erro_conexao:
+        print(f"Erro de conexão: {erro_conexao}")
+    except KeyError:
+        print("Erro: Estrutura de dados retornada pela API é diferente do esperado.")
+
+# Execução da função principal
+if __name__ == "__main__":
+    obter_cotacoes()

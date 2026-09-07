@@ -1,30 +1,51 @@
-from abc import ABC, abstractmethod
+class Livro:
+    def __init__(self, titulo, autor):
+        self.titulo = titulo
+        self.autor = autor
+        self.disponivel = True
 
+    def __str__(self):
+        status = "Disponível" if self.disponivel else "Emprestado"
+        return f"'{self.titulo}' por {self.autor} [{status}]"
 
-class Carro(ABC):
-    def __init__(self,marca, modelo):
-        self.marca = marca
-        self.modelo = modelo
+class Biblioteca:
+    def __init__(self, nome):
+        self.nome = nome
+        self.livros = []
+        self.historico_emprestimos = []
 
-    @abstractmethod
-    def exibir_info(self):
-        """Retorna as informações específicas do carro."""
-        return f"Marca: {self.marca}, Modelo: {self.modelo}"
+    def adicionar_livro(self, livro):
+        self.livros.append(livro)
 
-class CarroEletrico(Carro):
-    def __init__(self, marca, modelo, autonomia_bateria):
-        super().__init__(marca, modelo)
-        self.autonomia = autonomia_bateria
+    def emprestar_livro(self, titulo, leitor):
+        for livro in self.livros:
+            if livro.titulo.lower() == titulo.lower():
+                if livro.disponivel:
+                    livro.disponivel = False
+                    self.historico_emprestimos.append({"livro": livro.titulo, "leitor": leitor})
+                    print(f"Empréstimo de '{livro.titulo}' para {leitor} realizado!")
+                    return
+                print(f"O livro '{livro.titulo}' já está emprestado.")
+                return
+        print(f"Livro '{titulo}' não encontrado.")
 
+    def listar_disponiveis(self):
+        print(f"\n--- Livros Disponíveis ({self.nome}) ---")
+        disponiveis = [livro for livro in self.livros if livro.disponivel]
+        for livro in disponiveis:
+            print(livro)
 
+    def listar_historico_emprestimos(self):
+        print(f"\n--- Histórico de Empréstimos ---")
+        for registro in self.historico_emprestimos:
+            print(f"Livro: {registro['livro']} | Leitor: {registro['leitor']}")
 
+# Teste
+bib = Biblioteca("Biblioteca Central")
+bib.adicionar_livro(Livro("1984", "George Orwell"))
+bib.adicionar_livro(Livro("Dom Casmurro", "Machado de Assis"))
 
-
-
-
-    def exibir_info(self):
-        info_base = super().exibir_info()
-        return f"{info_base} | Autonomia da Bateria: {self.autonomia} km"
-
-meu_carro = CarroEletrico("BYD", "Dolphin", 600)
-print(meu_carro.exibir_info())
+bib.listar_disponiveis()
+bib.emprestar_livro("1984", "Carlos")
+bib.listar_disponiveis()
+bib.listar_historico_emprestimos()
